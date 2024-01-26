@@ -8,6 +8,7 @@
 #define forr(i,a,b) for (int i = int(a); i <= int(b); i++)
 #define all(v) v.begin(), v.end()
 #define pb push_back
+#define PI 3.14159265358979323846
  
 using namespace std;
  
@@ -20,38 +21,40 @@ typedef vector<p2i> vp2i;
 
 const int SIZE = 1e5 + 1,INF = 1e8 + 1;
 
-lli gauss(lli n, lli k){
-    // cout << k*n-(n*n)/2+n/2 << endl;
-    return k*n-(n*n)/2+n/2;
-}
-
 void solve(){
-    lli n; cin >> n;
-    lli k; cin >> k;
+    double n, R, r; cin >> n >> R >> r;
+    double x = (R*sin(PI/n))/(1+sin(PI/n));
 
     if(n == 1){
-        cout << "0";
-        return;
-    }
-
-    lli l = 1, r = k-1;
-
-    while(l<=r){
-        lli m = (l+r)/2;
-        if(1 + gauss(m, k-1) >= n){
-            r = m-1;
+        if(r <= R){
+            cout << "YES";
+            return;
         }
-        else
-            l = m+1;
+        else{
+            cout << "NO";
+            return;
+        }
     }
 
-    if(l == k){
-        cout << "-1";
-        return; 
+    if(n == 2){
+        if(2*r <= R){
+            cout << "YES";
+            return;
+        }
+        else{
+            cout << "NO";
+            return;
+        }
+    }
+    // cout << setprecision(30);
+    // cout << x + 1e-10 << endl;
+    // if (r <= x + 1e-10)
+    if(r*(1+sin(PI/n)) <= R*sin(PI/n)+1e-15){
+        cout << "YES";
     }
 
-    cout << r+1;
-
+    else
+        cout << "NO";
 
 }
 

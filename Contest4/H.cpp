@@ -14,44 +14,36 @@ using namespace std;
 typedef long long lli;
 typedef long double ld;
 typedef pair<int, int> p2i;
-typedef vector<int> vi;
+typedef vector<lli> vi;
 typedef vector<vi> vvi;
 typedef vector<p2i> vp2i;
 
 const int SIZE = 1e5 + 1,INF = 1e8 + 1;
 
-lli gauss(lli n, lli k){
-    // cout << k*n-(n*n)/2+n/2 << endl;
-    return k*n-(n*n)/2+n/2;
-}
-
 void solve(){
-    lli n; cin >> n;
-    lli k; cin >> k;
+    int n; cin >> n;
+    vvi a(2, vi(n));
+    vvi dp(2, vi(n, 0));
+    forn(i, n)
+        cin >> a[0][i];
+    forn(i, n)
+        cin >> a[1][i];
+    dp[0][0] = a[0][0];
+    dp[1][0] = a[1][0];
 
-    if(n == 1){
-        cout << "0";
-        return;
+    forn(i, n-2){
+        dp[1][i+1] = max(dp[1][i+1], dp[0][i]+a[1][i+1]);
+        dp[1][i+2] = max(dp[1][i+2], dp[0][i]+a[1][i+2]);
+        dp[0][i+1] = max(dp[0][i+1], dp[1][i]+a[0][i+1]);
+        dp[0][i+2] = max(dp[0][i+2], dp[1][i]+a[0][i+2]);
     }
 
-    lli l = 1, r = k-1;
-
-    while(l<=r){
-        lli m = (l+r)/2;
-        if(1 + gauss(m, k-1) >= n){
-            r = m-1;
-        }
-        else
-            l = m+1;
+    if(n > 1){
+        dp[1][n-1] = max(dp[1][n-1], dp[0][n-2]+a[1][n-1]);
+        dp[0][n-1] = max(dp[0][n-1], dp[1][n-2]+a[0][n-1]);
     }
-
-    if(l == k){
-        cout << "-1";
-        return; 
-    }
-
-    cout << r+1;
-
+         
+    cout << max(dp[1][n-1], dp[0][n-1]);
 
 }
 
